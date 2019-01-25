@@ -1,8 +1,8 @@
 <template>
-    <div class="columns detail-container">
+    <div class="columns detail-container" v-if="show">
         <div class="card column is-one-third">
             <div class="card-image">
-                <figure class="image is-2by3">
+                <figure class="image is-2by3" v-if="show.image">
                     <img :src="show.image.original" alt="Placeholder image">
                 </figure>
             </div>
@@ -57,17 +57,34 @@ export default {
     };
   },
   created() {
-    this.show = this.$store.state.searchedShows[this.$route.params.index];
+    let show;
+    const id = Number(this.$route.params.id);
+    show = this.$store.state.searchedShows.filter(element => {
+      return !!(element.id && element.id === id);
+    });
+    if (!show.length) {
+      show = this.$store.state.favoriteShows.filter(element => {
+        return !!(element.id && element.id === id);
+      });
+    }
+    this.show = show[0];
   },
   computed: {
     description() {
-      return this.show.summary.slice(3, -4).replace(/<[^>]+>/g, "");
+      if (this.show.summary) {
+        return this.show.summary.slice(3, -4).replace(/<[^>]+>/g, "");
+      }
+      return "Summary";
     },
     premiereDate() {
       return new Date(this.show.premiered).toLocaleDateString();
     },
     isFavorite() {
-      return this.$store.state.favoriteShows.indexOf(this.show) !== -1;
+      return (
+        this.$store.state.favoriteShows.filter(element => {
+          return !!(element.id && element.id === this.show.id);
+        }).length > 0
+      );
     }
   },
   methods: {
