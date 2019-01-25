@@ -1,7 +1,7 @@
 <template>
     <div class="card" v-if="show" @click="$emit('click')">
         <div class="card-image">
-            <figure class="image is-2by3">
+            <figure class="image is-2by3" v-if="show.image">
                 <img :src="show.image.original" alt="Placeholder image">
             </figure>
         </div>
@@ -37,8 +37,14 @@ export default {
   },
   computed: {
     description() {
-      const sentence = this.show.summary.slice(3, -4).slice(0, 180);
-      return sentence + "...";
+      if (this.show.summary) {
+        const sentence = this.show.summary
+          .slice(3, -4)
+          .slice(0, 180)
+          .replace(/<[^>]+>/g, "");
+        return sentence + "...";
+      }
+      return "Summary";
     },
     premiereDate() {
       return new Date(this.show.premiered).toLocaleDateString();

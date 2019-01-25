@@ -2,7 +2,7 @@
     <div class="columns detail-container">
         <div class="card column is-one-third">
             <div class="card-image">
-                <figure class="image is-2by3">
+                <figure class="image is-2by3" v-if="show.image">
                     <img :src="show.image.original" alt="Placeholder image">
                 </figure>
             </div>
@@ -61,7 +61,10 @@ export default {
   },
   computed: {
     description() {
-      return this.show.summary.slice(3, -4).replace(/<[^>]+>/g, "");
+      if (this.show.summary) {
+        return this.show.summary.slice(3, -4).replace(/<[^>]+>/g, "");
+      }
+      return "Summary";
     },
     premiereDate() {
       return new Date(this.show.premiered).toLocaleDateString();
