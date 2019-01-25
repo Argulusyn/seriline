@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     searchByQuery() {
-      this.$store.commit("setQuery", this.query);
+      this.$store.dispatch("searchByQuery", this.query);
     }
   },
   created() {
