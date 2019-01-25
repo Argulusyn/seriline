@@ -1,4 +1,7 @@
 <template>
+    <div>
+        <search-field></search-field>
+    </div>
 </template>
 
 <script>
