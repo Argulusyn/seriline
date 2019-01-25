@@ -15,10 +15,10 @@ export default {
     ShowsList,
     SearchField
   },
-    computed: {
-      searchedShows() {
-          return this.$store.state.searchedShows;
-      }
+  computed: {
+    searchedShows() {
+      return this.$store.state.searchedShows;
     }
+  }
 };
 </script>
