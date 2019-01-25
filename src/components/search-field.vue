@@ -2,10 +2,10 @@
     <div class="container">
         <div class="field has-addons">
             <p class="control">
-                <input class="input" type="text" placeholder="Find a TV series">
+                <input class="input" v-model="query" @keypress.enter="searchByQuery" type="text" placeholder="Find a TV series">
             </p>
             <p class="control">
-                <button class="button">
+                <button class="button" @click="searchByQuery">
                     Search
                 </button>
             </p>
@@ -16,8 +16,18 @@
 <script>
 export default {
   name: "SearchField",
-  props: {
-    msg: String
+  data() {
+    return {
+      query: ""
+    };
+  },
+  methods: {
+    searchByQuery() {
+      this.$store.commit("setQuery", this.query);
+    }
+  },
+  created() {
+    this.query = this.$store.state.query;
   }
 };
 </script>
