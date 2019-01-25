@@ -16,6 +16,9 @@ export default new Vuex.Store({
     },
     setSearchedShows(state, shows) {
       state.searchedShows = shows;
+    },
+    addFavorite(state, show) {
+      state.favoriteShows.push(show);
     }
   },
   actions: {
@@ -25,6 +28,9 @@ export default new Vuex.Store({
         data => commit("setSearchedShows", data),
         error => console.log(error)
       );
+    },
+    addShowToFavorite({ commit }, show) {
+      commit("addFavorite", show);
     }
   }
 });

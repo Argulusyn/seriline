@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card" v-if="show" @click="$emit('click')">
         <div class="card-image">
             <figure class="image is-2by3">
                 <img :src="show.image.original" alt="Placeholder image">
@@ -23,7 +23,7 @@
         <div class="card-content premiered">
             <div class="tags has-addons">
                 <span class="tag">Premiered</span>
-                <span class="tag is-success">{{ premiereDate }}</span>
+                <span class="tag is-link">{{ premiereDate }}</span>
             </div>
         </div>
     </div>
