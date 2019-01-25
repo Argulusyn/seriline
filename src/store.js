@@ -19,6 +19,9 @@ export default new Vuex.Store({
     },
     addFavorite(state, show) {
       state.favoriteShows.push(show);
+    },
+    addAllFavoriteShows(state, shows) {
+      state.favoriteShows.push(...shows);
     }
   },
   actions: {

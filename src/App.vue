@@ -8,6 +8,21 @@
   </div>
 </template>
 
+<script>
+  import {getFavoriteShowsFromStorage, saveFavoriteShowsToStorage, getQueryFromStorage, saveQueryToStorage} from "./services/LocaleStorageService";
+
+  export default {
+    created() {
+      this.$store.commit('addAllFavoriteShows', getFavoriteShowsFromStorage());
+      this.$store.commit('setQuery', getQueryFromStorage());
+    },
+    updated() {
+      saveFavoriteShowsToStorage(this.$store.state.favoriteShows);
+      saveQueryToStorage(this.$store.state.query);
+    }
+  }
+</script>
+
 <style>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
