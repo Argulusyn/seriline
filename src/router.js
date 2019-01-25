@@ -22,7 +22,7 @@ export default new Router({
         import(/* webpackChunkName: "about" */ "./views/Favorites.vue")
     },
     {
-      path: "/details/:index",
+      path: "/details/:id",
       name: "Details",
       component: ShowDetailed
     }

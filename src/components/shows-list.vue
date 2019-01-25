@@ -1,8 +1,8 @@
 <template>
     <div class="list-container">
         <div class="columns">
-            <show-card class="column is-one-quarter" v-for="(show, index) in shows" :show="show" :key="show.id"
-                       @click="goToDetailPage(index)"></show-card>
+            <show-card class="column is-one-quarter" v-for="show in shows" :show="show" :key="show.id"
+                       @click="goToDetailPage(show.id)"></show-card>
         </div>
     </div>
 </template>

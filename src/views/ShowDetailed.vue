@@ -1,5 +1,5 @@
 <template>
-    <div class="columns detail-container">
+    <div class="columns detail-container" v-if="show">
         <div class="card column is-one-third">
             <div class="card-image">
                 <figure class="image is-2by3" v-if="show.image">
@@ -57,7 +57,17 @@ export default {
     };
   },
   created() {
-    this.show = this.$store.state.searchedShows[this.$route.params.index];
+    let show;
+    const id = Number(this.$route.params.id);
+    show = this.$store.state.searchedShows.filter(element => {
+      return !!(element.id && element.id === id);
+    });
+    if (!show.length) {
+      show = this.$store.state.favoriteShows.filter(element => {
+        return !!(element.id && element.id === id);
+      });
+    }
+    this.show = show[0];
   },
   computed: {
     description() {
