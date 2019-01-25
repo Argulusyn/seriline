@@ -70,7 +70,11 @@ export default {
       return new Date(this.show.premiered).toLocaleDateString();
     },
     isFavorite() {
-      return this.$store.state.favoriteShows.indexOf(this.show) !== -1;
+      return (
+        this.$store.state.favoriteShows.filter(element => {
+          return !!(element.id && element.id === this.show.id);
+        }).length > 0
+      );
     }
   },
   methods: {
