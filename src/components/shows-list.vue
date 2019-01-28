@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     goToDetailPage(index) {
-      this.$router.push("details/" + index);
+      this.$router.push(`details/${index}`);
     }
   }
 };
