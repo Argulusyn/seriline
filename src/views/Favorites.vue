@@ -3,6 +3,11 @@
 </template>
 <script>
 import ShowsList from "../components/shows-list";
+import {
+  getFavoriteShowsFromStorage,
+  saveFavoriteShowsToStorage
+} from "../services/LocaleStorageService";
+
 export default {
   components: { ShowsList },
   data() {
@@ -11,7 +16,13 @@ export default {
     };
   },
   created() {
+    if (!this.$store.state.favoriteShows.length) {
+      this.$store.commit("addAllFavoriteShows", getFavoriteShowsFromStorage());
+    }
     this.favorites = this.$store.state.favoriteShows;
+    window.addEventListener("unload", () => {
+      saveFavoriteShowsToStorage(this.$store.state.favoriteShows);
+    });
   }
 };
 </script>

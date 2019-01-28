@@ -21,16 +21,13 @@ export default new Vuex.Store({
       state.favoriteShows.push(show);
     },
     addAllFavoriteShows(state, shows) {
-      state.favoriteShows.push(...shows);
+      state.favoriteShows = shows;
     }
   },
   actions: {
     searchByQuery({ commit }, query) {
       commit("setQuery", query);
-      getShowsByQuery(query).then(
-        data => commit("setSearchedShows", data),
-        error => console.log(error)
-      );
+      getShowsByQuery(query).then(data => commit("setSearchedShows", data));
     },
     addShowToFavorite({ commit }, show) {
       commit("addFavorite", show);
