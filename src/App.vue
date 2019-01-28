@@ -8,6 +8,16 @@
   </div>
 </template>
 
+<script>
+import { setEventHandlersToLocaleStorage } from "./services/LocaleStorageService";
+
+export default {
+  created() {
+    setEventHandlersToLocaleStorage(this.$store);
+  }
+};
+</script>
+
 <style>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;

@@ -14,10 +14,7 @@
 </template>
 
 <script>
-import {
-  getQueryFromStorage,
-  saveQueryToStorage
-} from "../services/LocaleStorageService";
+import { getQueryFromStorage } from "../services/LocaleStorageService";
 
 export default {
   name: "SearchField",
@@ -36,9 +33,6 @@ export default {
       this.$store.commit("setQuery", getQueryFromStorage());
     }
     this.query = this.$store.state.query;
-    window.addEventListener("unload", () => {
-      saveQueryToStorage(this.$store.state.query);
-    });
   }
 };
 </script>
