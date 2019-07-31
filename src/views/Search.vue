@@ -6,19 +6,21 @@
 </template>
 
 <script>
-import SearchField from "@/components/search-field.vue";
-import ShowsList from "../components/shows-list";
+import { mapGetters } from 'vuex';
+
+import SearchField from '@/components/search-field.vue';
+import ShowsList from '../components/shows-list';
 
 export default {
-  name: "Search",
+  name: 'Search',
   components: {
     ShowsList,
     SearchField
   },
   computed: {
-    searchedShows() {
-      return this.$store.state.searchedShows;
-    }
+    ...mapGetters({
+      searchedShows: 'searchedShows'
+    })
   }
 };
 </script>

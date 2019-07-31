@@ -1,7 +1,7 @@
 <template>
-    <div class="card" v-if="show" @click="$emit('click')">
+    <div v-if="show" class="card" @click="goToDetailPage(show)">
         <div class="card-image">
-            <figure class="image is-2by3" v-if="show.image">
+            <figure v-if="show.image" class="image is-2by3">
                 <img :src="show.image.original" alt="Placeholder image">
             </figure>
         </div>
@@ -11,7 +11,7 @@
                     <p class="title is-4">{{ show.name }}</p>
                     <p class="subtitle">{{ show.status }}</p>
                     <div class="tags">
-                        <span class="tag" v-for="tag in show.genres" :key="tag">{{ tag }}</span>
+                        <span v-for="tag in show.genres" :key="tag" class="tag">{{ tag }}</span>
                     </div>
                 </div>
             </div>
@@ -30,24 +30,38 @@
 </template>
 
 <script>
+import { truncate } from 'lodash';
+import { REPLACE_TAGS_REGEXP } from '../constants';
+
+const MAX_DESCRIPTION_LENGTH = 180;
+const DESCRIPTION_WORDS_SEPARATOR = ' ';
+
 export default {
-  name: "ShowCard",
+  name: 'ShowCard',
   props: {
-    show: null
+    show: {
+      type: Object,
+      required: true
+    }
   },
   computed: {
     description() {
       if (this.show.summary) {
-        const sentence = this.show.summary
-          .slice(3, -4)
-          .slice(0, 180)
-          .replace(/<[^>]+>/g, "");
-        return sentence + "...";
+        return truncate(this.show.summary, {
+          length: MAX_DESCRIPTION_LENGTH,
+          separator: DESCRIPTION_WORDS_SEPARATOR
+        }).replace(REPLACE_TAGS_REGEXP, '');
       }
-      return "Summary";
+
+      return 'Summary';
     },
     premiereDate() {
       return new Date(this.show.premiered).toLocaleDateString();
+    }
+  },
+  methods: {
+    goToDetailPage({ id }) {
+      this.$router.push(`details/${id}`);
     }
   }
 };

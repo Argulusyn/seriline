@@ -1,9 +1,8 @@
 <template>
-    <shows-list :shows="favorites" v-if="favorites"></shows-list>
+    <shows-list v-if="favorites" :shows="favorites"></shows-list>
 </template>
 <script>
-import ShowsList from "../components/shows-list";
-import { getFavoriteShowsFromStorage } from "../services/LocaleStorageService";
+import ShowsList from '../components/shows-list.vue';
 
 export default {
   components: { ShowsList },
@@ -13,9 +12,6 @@ export default {
     };
   },
   created() {
-    if (!this.$store.state.favoriteShows.length) {
-      this.$store.commit("addAllFavoriteShows", getFavoriteShowsFromStorage());
-    }
     this.favorites = this.$store.state.favoriteShows;
   }
 };
