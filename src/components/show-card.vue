@@ -1,5 +1,5 @@
 <template>
-    <div v-if="show" class="card" @click="goToDetailPage(show)">
+    <div v-if="show" class="show-card card" @click="goToDetailPage(show)">
         <div class="card-image">
             <figure v-if="show.image" class="image is-2by3">
                 <img :src="show.image.original" alt="Placeholder image">
@@ -30,11 +30,7 @@
 </template>
 
 <script>
-import { truncate } from 'lodash';
-import { REPLACE_TAGS_REGEXP } from '../constants';
-
-const MAX_DESCRIPTION_LENGTH = 180;
-const DESCRIPTION_WORDS_SEPARATOR = ' ';
+import { getShortShowDescription, getShowPremieredLocaleDate } from '../utils';
 
 export default {
   name: 'ShowCard',
@@ -46,17 +42,10 @@ export default {
   },
   computed: {
     description() {
-      if (this.show.summary) {
-        return truncate(this.show.summary, {
-          length: MAX_DESCRIPTION_LENGTH,
-          separator: DESCRIPTION_WORDS_SEPARATOR
-        }).replace(REPLACE_TAGS_REGEXP, '');
-      }
-
-      return 'Summary';
+      return getShortShowDescription(this.show);
     },
     premiereDate() {
-      return new Date(this.show.premiered).toLocaleDateString();
+      return getShowPremieredLocaleDate(this.show);
     }
   },
   methods: {
@@ -68,6 +57,10 @@ export default {
 </script>
 
 <style scoped>
+.show-card {
+  cursor: pointer;
+}
+
 .content {
   text-align: justify;
 }
