@@ -1,8 +1,8 @@
 <template>
-    <div class="columns detail-container" v-if="show">
+    <div v-if="show" class="columns detail-container">
         <div class="card column is-one-third">
             <div class="card-image">
-                <figure class="image is-2by3" v-if="show.image">
+                <figure v-if="show.image" class="image is-2by3">
                     <img :src="show.image.original" alt="Placeholder image">
                 </figure>
             </div>
@@ -11,7 +11,7 @@
                     <div class="media-content">
                         <p class="subtitle">{{ show.status }}</p>
                         <div class="tags">
-                            <span class="tag" v-for="tag in show.genres" :key="tag">{{ tag }}</span>
+                            <span v-for="tag in show.genres" :key="tag" class="tag">{{ tag }}</span>
                         </div>
                     </div>
                 </div>
@@ -29,11 +29,11 @@
                 <div class="content">
                     {{ description }}
                 </div>
-                <div class="tags has-addons" v-if="show.language">
+                <div v-if="show.language" class="tags has-addons">
                     <span class="tag">Language</span>
                     <span class="tag is-link">{{ show.language }}</span>
                 </div>
-                <div class="tags has-addons" v-if="show.rating.average">
+                <div v-if="show.rating.average" class="tags has-addons">
                     <span class="tag">Rating</span>
                     <span class="tag is-link">{{ show.rating.average + "/10" }}</span>
                 </div>
@@ -49,47 +49,53 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+import { REPLACE_TAGS_REGEXP } from '../constants';
+
 export default {
-  name: "ShowDetailed",
+  name: 'ShowDetailed',
   data() {
     return {
       show: null
     };
   },
-  created() {
-    let show;
-    const id = Number(this.$route.params.id);
-    show = this.$store.state.searchedShows.filter(element => {
-      return !!(element.id && element.id === id);
-    });
-    if (!show.length) {
-      show = this.$store.state.favoriteShows.filter(element => {
-        return !!(element.id && element.id === id);
-      });
-    }
-    this.show = show[0];
-  },
   computed: {
+    ...mapGetters({
+      favoriteShows: 'favoriteShows',
+      searchedShows: 'searchedShows'
+    }),
     description() {
       if (this.show.summary) {
-        return this.show.summary.slice(3, -4).replace(/<[^>]+>/g, "");
+        return this.show.summary.replace(REPLACE_TAGS_REGEXP, '');
       }
-      return "Summary";
+
+      return 'Summary';
     },
     premiereDate() {
       return new Date(this.show.premiered).toLocaleDateString();
     },
     isFavorite() {
-      return (
-        this.$store.state.favoriteShows.filter(element => {
-          return !!(element.id && element.id === this.show.id);
-        }).length > 0
-      );
+      return this.favoriteShows.some(({ id }) => id === this.show.id);
     }
   },
+  created() {
+    let show;
+    const showId = Number(this.$route.params.id);
+
+    show = this.searchedShows.find(({ id }) => id === showId);
+
+    if (!show) {
+      show = this.favoriteShows.find(({ id }) => id === showId);
+    }
+
+    this.show = show;
+  },
   methods: {
+    ...mapActions({
+      addShowToFavorite: 'addShowToFavorite'
+    }),
     addToFavorite() {
-      this.$store.dispatch("addShowToFavorite", this.show);
+      this.addShowToFavorite(this.show);
     }
   }
 };

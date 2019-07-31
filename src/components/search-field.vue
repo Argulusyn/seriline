@@ -2,10 +2,10 @@
     <div class="container">
         <div class="field has-addons">
             <p class="control">
-                <input class="input" v-model="query" @keypress.enter="searchByQuery" type="text" placeholder="Find a TV series">
+                <input :value="searchQuery" class="input" type="text" placeholder="Find a TV series" @input="updateQuery" @keypress.enter="search">
             </p>
             <p class="control">
-                <button class="button" @click="searchByQuery">
+                <button class="button" @click="search">
                     Search
                 </button>
             </p>
@@ -14,26 +14,40 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
-  name: "SearchField",
-  data() {
-    return {
-      query: ""
-    };
-  },
-  methods: {
-    searchByQuery() {
-      this.$store.dispatch("searchByQuery", this.query);
+  name: 'SearchField',
+  computed: {
+    ...mapGetters({
+      query: 'query'
+    }),
+    searchQuery: {
+      get() {
+        return this.query;
+      },
+      set(query) {
+        this.setQuery(query);
+      }
     }
   },
-  created() {
-    this.query = this.$store.state.query;
+  methods: {
+    ...mapActions({
+      searchByQuery: 'searchByQuery',
+      setQuery: 'setQuery'
+    }),
+    search() {
+      this.searchByQuery(this.searchQuery);
+    },
+    updateQuery({ target: { value } }) {
+      this.searchQuery = value;
+    }
   }
 };
 </script>
 
 <style>
-div.container {
+.container {
   display: flex;
   justify-content: center;
 }

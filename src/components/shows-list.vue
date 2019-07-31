@@ -1,26 +1,23 @@
 <template>
     <div class="list-container">
         <div class="columns">
-            <show-card class="column is-one-quarter" v-for="show in shows" :show="show" :key="show.id"
-                       @click="goToDetailPage(show.id)"></show-card>
+            <show-card v-for="show in shows" :key="show.id" class="column is-one-quarter" :show="show"></show-card>
         </div>
     </div>
 </template>
 
 <script>
-import ShowCard from "./show-card";
+import ShowCard from './show-card.vue';
 
 export default {
-  name: "ShowsList",
+  name: 'ShowsList',
   components: {
     ShowCard
   },
   props: {
-    shows: null
-  },
-  methods: {
-    goToDetailPage(index) {
-      this.$router.push("details/" + index);
+    shows: {
+      type: Array,
+      required: true
     }
   }
 };
