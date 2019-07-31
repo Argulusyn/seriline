@@ -38,7 +38,7 @@
                     <span class="tag is-link">{{ show.rating.average + "/10" }}</span>
                 </div>
                 <div class="buttons">
-                    <div class="button is-link" :href="show.officialSite">Official site</div>
+                    <a class="button is-link" :href="show.officialSite">Official site</a>
                     <button class="button is-link" :disabled="isFavorite" @click="addToFavorite()">Add to favorites
                         &#9734;
                     </button>
@@ -50,7 +50,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { REPLACE_TAGS_REGEXP } from '../constants';
+import { getShowDescription, getShowPremieredLocaleDate } from '../utils';
 
 export default {
   name: 'ShowDetailed',
@@ -65,30 +65,20 @@ export default {
       searchedShows: 'searchedShows'
     }),
     description() {
-      if (this.show.summary) {
-        return this.show.summary.replace(REPLACE_TAGS_REGEXP, '');
-      }
-
-      return 'Summary';
+      return getShowDescription(this.show);
     },
     premiereDate() {
-      return new Date(this.show.premiered).toLocaleDateString();
+      return getShowPremieredLocaleDate(this.show);
     },
     isFavorite() {
       return this.favoriteShows.some(({ id }) => id === this.show.id);
     }
   },
   created() {
-    let show;
+    const allShows = this.searchedShows.concat(this.favoriteShows);
     const showId = Number(this.$route.params.id);
 
-    show = this.searchedShows.find(({ id }) => id === showId);
-
-    if (!show) {
-      show = this.favoriteShows.find(({ id }) => id === showId);
-    }
-
-    this.show = show;
+    this.show = allShows.find(({ id }) => id === showId);
   },
   methods: {
     ...mapActions({
