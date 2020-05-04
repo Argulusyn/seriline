@@ -9,7 +9,7 @@
 import { mapGetters } from 'vuex';
 
 import SearchField from '@/components/search-field.vue';
-import ShowsList from '../components/shows-list';
+import ShowsList from '../components/shows-list.vue';
 
 export default {
   name: 'Search',
